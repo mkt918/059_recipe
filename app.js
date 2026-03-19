@@ -90,11 +90,14 @@ function toggleIngredientFilter(ingredient) {
 
 // --- Rendering ---
 function renderFilters() {
+    const activeClass = 'bg-orange-500 text-white border-orange-500 shadow-md shadow-orange-100';
+    const inactiveClass = 'bg-white text-slate-600 border-slate-200 hover:border-orange-200 hover:text-orange-500 hover:bg-orange-50 transition-all';
+
     // Categories
     const categories = ['すべて', ...new Set(state.recipes.map(r => r.category))];
     categoryFilters.innerHTML = categories.map(cat => `
         <button onclick="updateCategory('${cat}')" 
-                class="px-4 py-1.5 rounded-full border text-sm font-medium ${state.activeCategory === cat ? 'tag-active' : 'tag-inactive'}">
+                class="px-4 py-1.5 rounded-full border text-sm font-medium ${state.activeCategory === cat ? activeClass : inactiveClass}">
             ${cat}
         </button>
     `).join('');
@@ -112,7 +115,7 @@ function renderFilters() {
 
     ingredientFilters.innerHTML = sortedIngredients.map(ing => `
         <button onclick="toggleIngredientFilter('${ing}')" 
-                class="px-4 py-1.5 rounded-full border text-sm font-medium ${state.activeIngredients.includes(ing) ? 'tag-active' : 'tag-inactive'}">
+                class="px-4 py-1.5 rounded-full border text-sm font-medium ${state.activeIngredients.includes(ing) ? activeClass : inactiveClass}">
             ${ing}
         </button>
     `).join('');
@@ -152,19 +155,18 @@ function renderRecipes() {
         return `
             <div class="bg-white border border-slate-100 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-card relative animate-fade-in">
                 <div class="p-6">
-                    <div class="flex justify-between items-start mb-2">
+                    <div class="flex justify-between items-start mb-4">
                         <span class="px-2 py-0.5 bg-orange-50 text-orange-600 text-xs font-bold rounded-md uppercase">${recipe.category}</span>
                         <button onclick="event.stopPropagation(); toggleFavorite('${recipe.id}')" class="text-2xl transition-all hover:scale-110 active:scale-95 ${isFav ? 'text-red-500 heart-pop' : 'text-slate-200'}">
                             <ion-icon name="${isFav ? 'heart' : 'heart-outline'}"></ion-icon>
                         </button>
                     </div>
-                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop&q=60" alt="" class="w-full h-40 object-cover rounded-2xl mb-4 bg-slate-100">
-                    <h3 class="text-lg font-bold text-slate-800 leading-tight mb-3 line-clamp-2">${recipe.title}</h3>
-                    <div class="flex flex-wrap gap-1.5 mb-4">
-                        ${recipe.ingredients.slice(0, 4).map(ing => `<span class="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">#${ing}</span>`).join('')}
-                        ${recipe.ingredients.length > 4 ? `<span class="text-[10px] text-slate-400 px-1">+${recipe.ingredients.length - 4}</span>` : ''}
+                    <h3 class="text-xl font-bold text-slate-800 leading-tight mb-4 min-h-[3.5rem] line-clamp-2">${recipe.title}</h3>
+                    <div class="flex flex-wrap gap-1.5 mb-6">
+                        ${recipe.ingredients.slice(0, 6).map(ing => `<span class="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">#${ing}</span>`).join('')}
+                        ${recipe.ingredients.length > 6 ? `<span class="text-[10px] text-slate-400 px-1">+${recipe.ingredients.length - 6}</span>` : ''}
                     </div>
-                    <button onclick="openRecipeModal('${recipe.id}')" class="w-full py-2.5 bg-slate-900 text-white rounded-xl font-bold hover:bg-slate-700 transition-colors text-sm">詳細を見る</button>
+                    <button onclick="openRecipeModal('${recipe.id}')" class="w-full py-3 bg-slate-900 text-white rounded-xl font-bold hover:bg-slate-700 transition-colors text-sm">手順を確認する</button>
                 </div>
             </div>
         `;
@@ -177,24 +179,23 @@ function openRecipeModal(id) {
     if (!recipe) return;
 
     modalBody.innerHTML = `
-        <div class="flex flex-col md:flex-row gap-8">
-            <div class="md:w-1/3">
-                <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop&q=60" class="w-full h-64 md:h-80 object-cover rounded-3xl shadow-lg mb-6">
-                <div class="bg-orange-50 p-6 rounded-3xl border border-orange-100">
+        <div class="flex flex-col gap-8">
+            <div class="border-b border-slate-100 pb-6">
+                <div class="mb-4">
+                    <span class="inline-block px-3 py-1 bg-slate-100 text-slate-600 text-xs font-bold rounded-lg mb-2 capitalize">${recipe.category}</span>
+                    <h2 class="text-4xl font-bold text-slate-900 font-['Outfit'] mb-4">${recipe.title}</h2>
+                </div>
+                
+                <div class="bg-orange-50 p-6 rounded-3xl border border-orange-100 mb-8">
                     <h4 class="font-bold text-orange-900 mb-4 flex items-center gap-2">
                         <ion-icon name="list"></ion-icon>
                         材料
                     </h4>
-                    <ul class="space-y-2 text-sm text-orange-800">
-                        ${recipe.ingredients.map(ing => `<li class="flex items-center gap-2 font-medium"><ion-icon name="checkmark-circle" class="text-orange-400"></ion-icon> ${ing}</li>`).join('')}
-                    </ul>
+                    <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm text-orange-800">
+                        ${recipe.ingredients.map(ing => `<div class="flex items-center gap-2 font-medium"><ion-icon name="checkmark-circle" class="text-orange-400"></ion-icon> ${ing}</div>`).join('')}
+                    </div>
                 </div>
             </div>
-            <div class="md:w-2/3">
-                <div class="mb-4">
-                    <span class="inline-block px-3 py-1 bg-slate-100 text-slate-600 text-xs font-bold rounded-lg mb-2 capitalize">${recipe.category}</span>
-                    <h2 class="text-3xl font-bold text-slate-900 font-['Outfit'] mb-4">${recipe.title}</h2>
-                </div>
                 
                 <h4 class="font-bold text-slate-900 mb-4 flex items-center gap-2">
                     <ion-icon name="restaurant-outline"></ion-icon>
