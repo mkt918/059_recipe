@@ -88,7 +88,12 @@ function toggleIngredientFilter(ingredient) {
     renderRecipes();
 }
 
-// --- Rendering ---
+function clearIngredients() {
+    state.activeIngredients = [];
+    renderFilters();
+    renderRecipes();
+}
+
 function renderFilters() {
     const activeClass = 'bg-orange-500 text-white border-orange-500 shadow-md shadow-orange-100';
     const inactiveClass = 'bg-white text-slate-600 border-slate-200 hover:border-orange-200 hover:text-orange-500 hover:bg-orange-50 transition-all';
@@ -113,7 +118,15 @@ function renderFilters() {
         .sort((a, b) => ingredientCounts[b] - ingredientCounts[a])
         .slice(0, 15);
 
-    ingredientFilters.innerHTML = sortedIngredients.map(ing => `
+    // Ingredient buttons with "すべて" at the beginning
+    const allIngredientsBtn = `
+        <button onclick="clearIngredients()" 
+                class="px-4 py-1.5 rounded-full border text-sm font-medium ${state.activeIngredients.length === 0 ? activeClass : inactiveClass}">
+            すべて
+        </button>
+    `;
+
+    ingredientFilters.innerHTML = allIngredientsBtn + sortedIngredients.map(ing => `
         <button onclick="toggleIngredientFilter('${ing}')" 
                 class="px-4 py-1.5 rounded-full border text-sm font-medium ${state.activeIngredients.includes(ing) ? activeClass : inactiveClass}">
             ${ing}
