@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Recipe Site</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter, Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
+    <!-- PapaParse for robust CSV parsing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 text-slate-900 font-['Inter'] antialiased">
+
+    <!-- Header / Search Section -->
+    <header class="sticky top-0 z-40 w-full backdrop-blur-md bg-white/80 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-12 flex items-center justify-between">
+             <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-orange-200">
+                    <ion-icon name="restaurant" class="text-2xl"></ion-icon>
+                </div>
+                <h1 class="text-2xl font-['Outfit'] font-bold bg-gradient-to-r from-slate-900 to-slate-500 bg-clip-text text-transparent">RecipeHub</h1>
+            </div>
+            <div class="flex items-center gap-4">
+                <button id="show-favorites" class="flex items-center gap-2 px-4 py-2 rounded-full hover:bg-slate-100 transition-all font-semibold">
+                    <ion-icon name="heart" class="text-red-500 text-xl"></ion-icon>
+                    <span>お気に入り</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Search & Filter Area -->
+        <section class="mb-12">
+            <div class="relative max-w-2xl mx-auto mb-8">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+                    <ion-icon name="search-outline" class="text-2xl"></ion-icon>
+                </div>
+                <input type="text" id="search-input" 
+                    placeholder="レシピ名、食材、種別で検索..." 
+                    class="block w-full pl-12 pr-4 py-4 bg-white border border-slate-200 rounded-2xl shadow-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all text-lg outline-none">
+            </div>
+
+            <!-- Filters Container -->
+            <div class="space-y-4">
+                <div>
+                    <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-2">種別から探す</h3>
+                    <div id="category-filters" class="flex flex-wrap gap-2">
+                        <!-- Categories will be injected here -->
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-2">主な食材から探す</h3>
+                    <div id="ingredient-filters" class="flex flex-wrap gap-2">
+                        <!-- Ingredients will be injected here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recipes Grid -->
+        <section>
+            <div id="recipe-count" class="mb-6 text-slate-500 font-medium">レシピを表示中...</div>
+            <div id="recipe-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Recipe Cards will be injected here -->
+                <div class="animate-pulse bg-white border border-slate-100 rounded-3xl overflow-hidden shadow-sm h-80"></div>
+                <div class="animate-pulse bg-white border border-slate-100 rounded-3xl overflow-hidden shadow-sm h-80"></div>
+                <div class="animate-pulse bg-white border border-slate-100 rounded-3xl overflow-hidden shadow-sm h-80"></div>
+                <div class="animate-pulse bg-white border border-slate-100 rounded-3xl overflow-hidden shadow-sm h-80"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal for Detail -->
+    <div id="recipe-modal" class="fixed inset-0 z-50 hidden bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto transform scale-95 transition-transform duration-300 opacity-0 relative" id="modal-content">
+            <button id="close-modal" class="absolute top-6 right-6 p-2 bg-slate-100 hover:bg-slate-200 rounded-full text-slate-500 transition-all z-10">
+                <ion-icon name="close" class="text-2xl"></ion-icon>
+            </button>
+            <div id="modal-body" class="p-8">
+                <!-- Detail will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-slate-200 bg-white">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-slate-500">© 2026 mkt918 Recipe Site. Education Purpose.</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

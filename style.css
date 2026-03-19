@@ -1,0 +1,85 @@
+/* Custom Styles for Premium Recipe Site */
+
+@layer base {
+    body {
+        background-image: 
+            radial-gradient(at 0% 0%, hsla(28,100%,74%,0.15) 0, transparent 50%), 
+            radial-gradient(at 50% 0%, hsla(11,100%,77%,0.05) 0, transparent 50%), 
+            radial-gradient(at 100% 0%, hsla(22,100%,71%,0.1) 0, transparent 50%);
+        background-attachment: fixed;
+    }
+}
+
+/* Glassmorphism */
+.glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Transitions */
+.transition-card {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.transition-card:hover {
+    transform: translateY(-8px);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-modal-in {
+    animation: modalFadeIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Heart Animation */
+.heart-pop {
+    animation: heartPop 0.3s cubic-bezier(0.17, 0.89, 0.32, 1.49);
+}
+
+@keyframes heartPop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.4); }
+    100% { transform: scale(1); }
+}
+
+/* Tag styles */
+.tag-active {
+    @apply bg-orange-500 text-white border-orange-500 shadow-md shadow-orange-100;
+}
+
+.tag-inactive {
+    @apply bg-white text-slate-600 border-slate-200 hover:border-orange-200 hover:text-orange-500 hover:bg-orange-50 transition-all;
+}
