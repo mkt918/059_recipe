@@ -31,6 +31,11 @@ const favCountEl = $('#favCount');
 const dialog = $('#detail');
 const dialogBody = $('#detailBody');
 const cardTpl = $('#tpl-card');
+const jumpTop = $('#jumpTop');
+const jumpBottom = $('#jumpBottom');
+
+const prefersReducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const SCROLL_BEHAVIOR = prefersReducedMotion ? 'auto' : 'smooth';
 
 // --- init ---
 init();
@@ -211,6 +216,16 @@ function render() {
     const frag = document.createDocumentFragment();
     list.forEach((r) => frag.appendChild(buildCard(r)));
     grid.replaceChildren(frag);
+
+    updateJump();
+}
+
+// --- jump to top / bottom ---
+function updateJump() {
+    const y = window.scrollY;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    jumpTop.hidden = y < 320;
+    jumpBottom.hidden = max <= 0 || y > max - 320;
 }
 
 function buildCard(r) {
@@ -341,6 +356,15 @@ function bindEvents() {
         if (location.hash.startsWith('#r-')) openFromHash();
         else closeRecipe();
     });
+
+    jumpTop.addEventListener('click', () =>
+        window.scrollTo({ top: 0, behavior: SCROLL_BEHAVIOR })
+    );
+    jumpBottom.addEventListener('click', () =>
+        window.scrollTo({ top: document.documentElement.scrollHeight, behavior: SCROLL_BEHAVIOR })
+    );
+    window.addEventListener('scroll', updateJump, { passive: true });
+    window.addEventListener('resize', updateJump);
 }
 
 function showError() {

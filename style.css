@@ -2,7 +2,7 @@
 /* Pre-emit critique: P4 H5 E4 S4 R5 V4 */
 
 :root {
-    color-scheme: light dark;
+    color-scheme: light;
 
     --font: "Zen Kaku Gothic New", -apple-system, BlinkMacSystemFont,
         "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic UI", Meiryo, sans-serif;
@@ -38,26 +38,7 @@
     --maxw: 1180px;
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        --paper: oklch(20.5% 0.01 60);
-        --surface: oklch(24.5% 0.012 60);
-        --surface-2: oklch(28% 0.013 60);
-        --ink: oklch(94% 0.006 75);
-        --ink-2: oklch(78% 0.008 75);
-        --ink-3: oklch(64% 0.01 75);
-        --line: oklch(33% 0.012 60);
-        --line-2: oklch(41% 0.015 60);
-        --accent: oklch(72% 0.15 48);
-        --accent-press: oklch(66% 0.14 48);
-        --accent-weak: oklch(32% 0.05 42);
-        --accent-ink: oklch(82% 0.12 52);
-        --fav: oklch(72% 0.16 24);
-        --focus: oklch(72% 0.14 250);
-        --shadow-1: 0 1px 2px oklch(0% 0 0 / 0.32), 0 3px 10px oklch(0% 0 0 / 0.26);
-        --shadow-2: 0 8px 30px oklch(0% 0 0 / 0.4);
-    }
-}
+/* light mode only — configurable palette via the tokens above */
 
 /* ---------- base ---------- */
 * { box-sizing: border-box; }
@@ -383,10 +364,12 @@ button { font: inherit; color: inherit; }
     transition: border-color var(--dur) var(--ease-out),
         transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
 }
-.card:hover {
-    border-color: var(--line-2);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-2);
+@media (hover: hover) {
+    .card:hover {
+        border-color: var(--line-2);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-2);
+    }
 }
 
 .card-head {
@@ -642,7 +625,60 @@ dialog#detail:not([open]) { opacity: 0; transform: translateY(10px) scale(0.98);
     color: var(--ink-3);
 }
 
+/* ---------- jump to top / bottom ---------- */
+.jump {
+    position: fixed;
+    right: 14px;
+    bottom: 14px;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s2);
+}
+.jump button {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    color: var(--ink-2);
+    background: color-mix(in oklch, var(--surface) 92%, transparent);
+    backdrop-filter: blur(6px);
+    border: 1px solid var(--line-2);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-2);
+    cursor: pointer;
+    transition: background var(--dur) var(--ease-out), color var(--dur) var(--ease-out),
+        border-color var(--dur) var(--ease-out), transform var(--dur) var(--ease-out);
+}
+.jump button[hidden] { display: none; }
+.jump button svg { width: 20px; height: 20px; }
+.jump button:hover {
+    background: var(--accent-weak);
+    color: var(--accent-ink);
+    border-color: var(--accent);
+}
+.jump button:active { transform: translateY(1px); }
+
 /* ---------- responsive ---------- */
+@media (max-width: 640px) {
+    .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--s3);
+    }
+    .card {
+        padding: var(--s3);
+        border-radius: var(--radius-sm);
+        gap: var(--s2);
+    }
+    .card-title { font-size: 0.96rem; line-height: 1.4; }
+    .card-ings { font-size: 0.78rem; }
+    .tag { font-size: 0.68rem; padding: 2px 7px; }
+    .btn-detail { padding: 8px 6px; font-size: 0.8rem; }
+    .fav-btn { width: 30px; height: 30px; }
+    .card.skeleton { height: 150px; }
+    .grid { margin-bottom: var(--s7); }
+}
+
 @media (max-width: 560px) {
     .header-inner { min-height: 0; row-gap: var(--s2); }
     .brand { font-size: 1.05rem; }
@@ -657,6 +693,7 @@ dialog#detail:not([open]) { opacity: 0; transform: translateY(10px) scale(0.98);
     .fav-toggle, .sheet-link { padding: 8px 11px; }
     #detailBody { padding: var(--s6) var(--s4) var(--s4); }
     .d-title { padding-right: var(--s6); }
+    .jump button { width: 40px; height: 40px; }
 }
 
 /* ---------- motion off ---------- */
@@ -667,4 +704,5 @@ dialog#detail:not([open]) { opacity: 0; transform: translateY(10px) scale(0.98);
         transition-duration: 0.01ms !important;
     }
     .card:hover { transform: none; }
+    html { scroll-behavior: auto; }
 }

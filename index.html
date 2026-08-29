@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>レシピ帳</title>
     <meta name="description" content="よく作る料理の手順をすぐ引ける個人用レシピ帳。">
-    <meta name="color-scheme" content="light dark">
+    <meta name="color-scheme" content="light">
     <link rel="icon" type="image/png" href="favicon.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,6 +32,12 @@
         <symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1.5 1.5"></path>
             <path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1.5-1.5"></path>
+        </symbol>
+        <symbol id="i-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 15l6-6 6 6"></path>
+        </symbol>
+        <symbol id="i-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 9l6 6 6-6"></path>
         </symbol>
     </svg>
 
@@ -96,6 +102,15 @@
             <p>© 2026 mkt918 レシピ帳 — 個人用</p>
         </div>
     </footer>
+
+    <div class="jump" id="jump">
+        <button type="button" id="jumpTop" aria-label="最上部へ移動" hidden>
+            <svg aria-hidden="true"><use href="#i-up"></use></svg>
+        </button>
+        <button type="button" id="jumpBottom" aria-label="最下部へ移動" hidden>
+            <svg aria-hidden="true"><use href="#i-down"></use></svg>
+        </button>
+    </div>
 
     <dialog id="detail" aria-labelledby="detailTitle">
         <button type="button" class="dialog-close" id="detailClose" aria-label="閉じる">
